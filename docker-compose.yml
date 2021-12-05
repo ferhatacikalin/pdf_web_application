@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mysql:
+    image: mysql/mysql-server:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=pdf_db
+      - MYSQL_USER=muzkarpuz
+      - MYSQL_PASSWORD=87654321
+      - MYSQL_ROOT_HOST=mysql
+      - MYSQLDB_ROOT_PASSWORD=87654321
+      - MYSQL_TCP_PORT=3306
+    volumes:
+      - ./db-data:/var/lib/mysql
+  web:
+    depends_on:
+      - mysql
+    build: flask_app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./flask_app:/flask_app
+  
