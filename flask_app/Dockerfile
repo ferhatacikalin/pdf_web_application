@@ -1,7 +1,9 @@
-FROM python:3.9-alpine
-RUN apk add build-base
+FROM ubuntu:20.04
+RUN apt update
+RUN apt install -y python3-pip
+RUN apt install -y build-essential libssl-dev libffi-dev python3-dev
+RUN apt install -y libmysqlclient-dev
+RUN apt install python3.8-venv
 WORKDIR /flask_app
-RUN python -m pip install --upgrade pip
-COPY requirements.txt /tmp/
-RUN pip install --requirement /tmp/requirements.txt
-CMD [ "python", "app.py" ]
+RUN python3 -m venv .
+CMD [ "bin/python3", "app.py" ]
