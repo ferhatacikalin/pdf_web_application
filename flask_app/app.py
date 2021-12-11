@@ -1,6 +1,13 @@
 from os import name
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 import db_models
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://muzkarpuz:87654321@mysql/pdf_db'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+
 
 
 app = Flask(__name__)
