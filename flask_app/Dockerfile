@@ -5,6 +5,11 @@ RUN apt install -y build-essential libssl-dev libffi-dev python3-dev
 RUN apt install -y libmysqlclient-dev
 RUN apt install python3.8-venv
 WORKDIR /flask_app
-RUN python3 -m venv .
-RUN bash -c "source bin/activate"
+RUN pip3 install virtualenv
+RUN pip3 install \
+    flask\
+    flask-cors\
+    flask-sqlalchemy\
+    mysqlclient
+
 CMD [ "python3", "app.py" ]
