@@ -12,4 +12,6 @@ RUN pip3 install \
     flask-sqlalchemy\
     mysqlclient
 
-CMD [ "python3", "app.py" ]
+
+
+CMD [ "python3", "run.py" ]
