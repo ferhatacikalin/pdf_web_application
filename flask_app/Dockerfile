@@ -6,4 +6,5 @@ RUN apt install -y libmysqlclient-dev
 RUN apt install python3.8-venv
 WORKDIR /flask_app
 RUN python3 -m venv .
-CMD [ "bin/python3", "app.py" ]
+RUN bash -c "source bin/activate"
+CMD [ "python3", "app.py" ]
