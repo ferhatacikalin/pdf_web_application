@@ -10,7 +10,6 @@ class DevelopmentConfig(BaseConfig):
     TESTING = True
 
 
-
 class TestingConfig:
     DEBUG = False
     TESTING = True
