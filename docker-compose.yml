@@ -16,6 +16,7 @@ services:
     volumes:
       - ./db-data:/var/lib/mysql
   web:
+    restart: always
     depends_on:
       - mysql
     build: flask_app

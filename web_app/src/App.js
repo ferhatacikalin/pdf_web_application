@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "./Login";
+import Users from "./Users";
+import Footer from "./Footer";
+import Header from "./Header";
+import UploadPdf from "./UploadPdf";
+import ViewPdf from "./ViewPdf";
+import { Routes, Route, Link } from "react-router-dom";
+import UserManagmenet from "./UserManagement";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      
+      <div className="container  max-w-screen-lg mx-auto">
+        <div class="py-8">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/add_user" element={<UserManagmenet />} />
+            <Route path="/upload_pdf" element={<UploadPdf />} />
+            <Route path="/view_pdf" element={<ViewPdf/>} />
+          </Routes>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }
-
-export default App;

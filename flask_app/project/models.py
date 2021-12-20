@@ -7,39 +7,48 @@ class Login(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    manager_or_user = db.Column(db.BOOLEAN, nullable=False)
+    is_admin = db.Column(db.BOOLEAN, nullable=False)
 
-    def __init__(self, username, password, manager_or_user):
+    def __init__(self, username, password, is_admin):
         self.username = username
         self.password = password
-        self.manager_or_user = manager_or_user
+        self.is_admin = is_admin
 
 
 class AuthorInfo(db.Model):
-    fk_id = db.Column(db.Integer, db.ForeignKey('login.id'), primary_key=True, nullable=False)
-    name = db.Column(db.String(80), nullable=False)
-    surname = db.Column(db.String(80), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), primary_key=True, nullable=False)
+    name_surname = db.Column(db.String(80), nullable=False)
     student_no = db.Column(db.Integer, nullable=False)
     education_type = db.Column(db.String(60), nullable=False)
 
-    def __init__(self, fk_id, name, surname, student_no, education_type):
-        self.fk_id = fk_id
-        self.name = name
-        self.surname = surname
+    def __init__(self, user_id, project_id, name_surname, student_no, education_type):
+        self.user_id = user_id
+        self.project_id = project_id
+        self.name_surname = name_surname
         self.student_no = student_no
         self.education_type = education_type
 
 
 class ProjectInfo(db.Model):
-    fk_id = db.Column(db.Integer, db.ForeignKey('login.id'), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('author_info.id'), nullable=False)
+    advisor_id = db.Column(db.Integer, db.ForeignKey('advisor_info.id'), nullable=False)
+    jury_id = db.Column(db.Integer, db.ForeignKey('jury_info.id'), nullable=False)
     lesson_type = db.Column(db.String(80), nullable=False)
     p_title = db.Column(db.String(80), nullable=False)
     p_summary = db.Column(db.Text, nullable=False)
     p_keywords = db.Column(db.Text, nullable=False)
     p_delivery = db.Column(db.String(120), nullable=False)
 
-    def __init__(self, fk_id, lesson_type, p_title, p_summary, p_keywords, p_delivery):
-        self.fk_id = fk_id
+    def __init__(self, user_id, author_id, advisor_id, jury_id,
+                 lesson_type, p_title, p_summary, p_keywords, p_delivery):
+        self.user_id = user_id
+        self.author_id = author_id
+        self.advisor_id = advisor_id
+        self.jury_id = jury_id
         self.lesson_type = lesson_type
         self.p_title = p_title
         self.p_summary = p_summary
@@ -48,26 +57,42 @@ class ProjectInfo(db.Model):
 
 
 class AdvisorInfo(db.Model):
-    fk_id = db.Column(db.Integer, db.ForeignKey('login.id'), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), nullable=False)
     advisor_name = db.Column(db.String(80), nullable=False)
     advisor_surname = db.Column(db.String(80), nullable=False)
     advisor_degree = db.Column(db.String(80), nullable=False)
 
-    def __init__(self, fk_id, advisor_name, advisor_surname, advisor_degree):
-        self.fk_id = fk_id
+    def __init__(self, user_id, project_id, advisor_name, advisor_surname, advisor_degree):
+        self.user_id = user_id
+        self.project_id = project_id
         self.advisor_name = advisor_name
         self.advisor_surname = advisor_surname
         self.advisor_degree = advisor_degree
 
 
 class JuryInfo(db.Model):
-    fk_id = db.Column(db.Integer, db.ForeignKey('login.id'), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), nullable=False)
     jury_name = db.Column(db.String(90), nullable=False)
     jury_surname = db.Column(db.String(90), nullable=False)
     jury_degree = db.Column(db.String(90), nullable=False)
 
-    def __init__(self, fk_id, jury_name, jury_surname, jury_degree):
-        self.fk_id = fk_id
+    def __init__(self, user_id, project_id, jury_name, jury_surname, jury_degree):
+        self.user_id = user_id
+        self.project_id = project_id
         self.jury_name = jury_name
         self.jury_surname = jury_surname
         self.jury_degree = jury_degree
+
+
+class Documents(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'),nullable=True)
+    document = db.Column(db.LargeBinary(length=(2**32)-1))
+
+    def __init__(self,project_id,document):
+        self.project_id=project_id
+        self.document = document

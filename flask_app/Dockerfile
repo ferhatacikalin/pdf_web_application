@@ -10,7 +10,13 @@ RUN pip3 install \
     flask\
     flask-cors\
     flask-sqlalchemy\
-    mysqlclient
+    mysqlclient\
+    Flask-JWT\
+    flask-rest-jsonapi\
+    jsonify\
+    Flask-Reuploaded\
+    Werkzeug
+
 
 
 
