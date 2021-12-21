@@ -28,6 +28,7 @@ export default class EditUser extends React.Component {
       is_admin: value,
     });
   }
+  
   editUser(){
       this.setState({message:" "});
     var FormData = require('form-data');

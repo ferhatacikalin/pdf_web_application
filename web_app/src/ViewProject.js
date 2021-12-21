@@ -99,8 +99,7 @@ export default function ViewProject(){
                            Danışman
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                          <div> <p className="mt-1 text-lg text-gray-900">Ad</p> {project.advisor['advisor_name']} </div>
-                          <div> <p className="mt-1 text-lg text-gray-900">Soyad</p> {project.advisor['advisor_surname']} </div>
+                          <div> <p className="mt-1 text-lg text-gray-900">Ad Soyad</p> {project.advisor['advisor_name']} </div>
                           <div> <p className="mt-1 text-lg text-gray-900">Unvan</p> {project.advisor['advisor_degree']} </div>
                         </dd>
                     </div>
