@@ -84,6 +84,223 @@ def delete_user(u_id):
     return 'ok', 200
 
 
+
+@api.route('/query/author/<a_id>', methods=['GET'])
+@jwt_required()
+def get_author_id(a_id):
+    author = AuthorInfo.query.get_or_404(a_id)
+    project = ProjectInfo.query.get_or_404(author.id)
+    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+    jury = JuryInfo.query.get_or_404(project.jury_id)
+
+    return jsonify({
+        'author_id': author.id,
+        'user_id': author.user_id,
+        'advisor': {
+            'advisor_id': advisor.id,
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_id': jury.id,
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree,
+
+        },
+        'project': {
+            'project_id': project.id,
+            'document_id': project.document_id,
+            'lesson_type': project.lesseon_type,
+            'p_title': project.p_title,
+            'p_summary': project.p_summary,
+            'p_keywords': project.p_keywords,
+            'p_delivery': project.p_delivery
+
+
+        },
+        'name_surname': author.name_surname,
+        'student_no': author.student_no,
+        'education_type': author.education_type
+
+    });
+
+
+@api.route('/query/lesson/<l_name>', methods=['GET'])
+@jwt_required()
+def get_lesson_name(l_name):
+    project = ProjectInfo.query.get_or_404(ProjectInfo.lesson_type == l_name)
+    author = AuthorInfo.query.get_or_404(project.author_id)
+    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+    jury = JuryInfo.query.get_or_404(project.jury_id)
+
+    return jsonify({
+        'project_id': project.id,
+        'user_id': project.user_id,
+        'document_id': project.document_id,
+        'author': {
+            'id': author.id,
+            'name_surname': author.name_surname,
+            'student_no': author.student_no,
+            'education_type': author.education_type
+        },
+        'advisor': {
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree
+
+        },
+        'lesson_type': project.lesson_type,
+        'p_title': project.p_title,
+        'p_summary': project.p_summary,
+        'p_keywords': project.p_keywords,
+        'p_delivery': project.p_delivery
+
+    });
+
+
+@api.route('/query/project_name/<p_title>', methods=['GET'])
+@jwt_required()
+def get_project_name(p_title):
+    project = ProjectInfo.query.get_or_404(ProjectInfo.p_title == p_title)
+    author = AuthorInfo.query.get_or_404(project.author_id)
+    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+    jury = JuryInfo.query.get_or_404(project.jury_id)
+
+    return jsonify({
+        'project_id': project.id,
+        'user_id': project.user_id,
+        'document_id': project.document_id,
+        'author': {
+            'id': author.id,
+            'name_surname': author.name_surname,
+            'student_no': author.student_no,
+            'education_type': author.education_type,
+        },
+        'advisor': {
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree,
+
+        },
+        'lesson_type': project.lesson_type,
+        'p_title': project.p_title,
+        'p_summary': project.p_summary,
+        'p_keywords': project.p_keywords,
+        'p_delivery': project.p_delivery
+    });
+
+
+@api.route('/query/delivery/<p_delivery>', methods=['GET'])
+@jwt_required()
+def get_project_delivery(p_delivery):
+    project = ProjectInfo.query.get_or_404(ProjectInfo.p_delivery == p_delivery)
+    author = AuthorInfo.query.get_or_404(project.author_id)
+    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+    jury = JuryInfo.query.get_or_404(project.jury_id)
+
+    return jsonify({
+        'project_id': project.id,
+        'user_id': project.user_id,
+        'document_id': project.document_id,
+        'author': {
+            'id': author.id,
+            'name_surname': author.name_surname,
+            'student_no': author.student_no,
+            'education_type': author.education_type
+        },
+        'advisor': {
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree
+
+        },
+        'lesson_type': project.lesson_type,
+        'p_title': project.p_title,
+        'p_summary': project.p_summary,
+        'p_keywords': project.p_keywords,
+        'p_delivery': project.p_delivery
+    });
+
+
+@api.route('/query/keywords/<p_keywords>', methods=['GET'])
+@jwt_required()
+def get_project_keywords(p_keywords):
+    project = ProjectInfo.query.get_or_404(p_keywords in ProjectInfo.p_keywords)
+    author = AuthorInfo.query.get_or_404(project.author_id)
+    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+    jury = JuryInfo.query.get_or_404(project.jury_id)
+
+    return jsonify({
+        'project_id': project.id,
+        'user_id': project.user_id,
+        'document_id': project.document_id,
+        'author': {
+            'id': author.id,
+            'name_surname': author.name_surname,
+            'student_no': author.student_no,
+            'education_type': author.education_type
+        },
+        'advisor': {
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree
+
+        },
+        'lesson_type': project.lesson_type,
+        'p_title': project.p_title,
+        'p_summary': project.p_summary,
+        'p_keywords': project.p_keywords,
+        'p_delivery': project.p_delivery
+
+    });
+
+
+@api.route('/query/<p_delivery>+<author_name>+<lesson_type>', methods=['GET'])
+@jwt_required()
+def get_query_two(p_delivery, author_name, lesson_type):
+    author = AuthorInfo.query.get_or_404(AuthorInfo.name_surname == author_name)
+
+    project = ProjectInfo.query.get_or_404(author.id == ProjectInfo.author_id and
+                                           ProjectInfo.p_delivery == p_delivery and 
+                                           ProjectInfo.lesson_type == lesson_type)
+    return jsonify({
+        'id': project.id,
+        'user_id': project.user_id,
+        'document_id': project.document_id,
+        'lesson_type': project.lesson_type,
+        'p_title': project.p_title,
+        'p_summary': project.p_summary,
+        'p_keywords': project.p_keywords,
+        'p_delivery': project.p_delivery
+
+
+
+    });
+
+
+
 @api.route('/upload_project', methods=['POST'])
 @jwt_required()
 def upload_project():
