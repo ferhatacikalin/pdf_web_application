@@ -3,7 +3,7 @@ import datetime
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://localhost:87654321@mysql/pdf_db'
+    SQLALCHEMY_DATABASE_URI = 'mysql://muzkarpuz:87654321@127.0.0.1/pdf_db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = "asdasdasdasdasdasdasdssassa"
     JWT_AUTH_HEADER_PREFIX = "Bearer"

@@ -1,16 +1,16 @@
 import re
 import datetime as dt
-import parsepdf
+from project.parsepdf import ParsePDF
 
-pdf_data = parsepdf.ParsePDF("pdf_files/Tez-2.pdf").parse_pdf_and_write()
+#pdf_data = ParsePDF(f_name).parse_pdf_and_write()
 
 
 class Author():
-    def __init__(self):
+    def __init__(self,f_name):
         self.id = []
         self.student_name = []
         self.e_type = []
-        self.data = pdf_data
+        self.data = ParsePDF(f_name).parse_pdf_and_write()
         self.get_student_id()
         self.get_education_type()
         self.get_student_name()
@@ -41,10 +41,10 @@ class Author():
 
 
 class Advisor():
-    def __init__(self):
+    def __init__(self,f_name):
         self.advisor_name = []
         self.advisor_degree = []
-        self.data = pdf_data
+        self.data = ParsePDF(f_name).parse_pdf_and_write()
         self.get_advisor()
 
     def get_advisor(self):
@@ -63,10 +63,10 @@ class Advisor():
 
 
 class Jury():
-    def __init__(self):
+    def __init__(self,f_name):
         self.jury_name = []
         self.jury_degree = []
-        self.data = pdf_data
+        self.data = ParsePDF(f_name).parse_pdf_and_write()
         self.get_jury()
 
     def get_jury(self):
@@ -94,13 +94,13 @@ class Jury():
 
 
 class Project():
-    def __init__(self):
+    def __init__(self,f_name):
         self.deliveryTime = []
         self.keyword = []
         self.project_name = []
         self.lesson_type = []
         self.summary = []
-        self.data = pdf_data
+        self.data = ParsePDF(f_name).parse_pdf_and_write()
         self.get_delivery()
         self.get_keywords()
         self.get_title_and_lesson_type()

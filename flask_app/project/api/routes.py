@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, abort, make_response
 from flask_jwt import jwt_required, current_identity
 from flask_uploads import UploadSet, DOCUMENTS
 from project.models import db, Login, AuthorInfo, Documents, ProjectInfo, AdvisorInfo, JuryInfo
-
+from project.getInfo import Advisor, Author, Jury, Project
 api = Blueprint('api', __name__)
 documents = UploadSet('documents', DOCUMENTS)
 
@@ -308,33 +308,38 @@ def upload_project():
         filename = documents.save(request.files['pdf'],
                                   name=werkzeug.utils.secure_filename(request.files['pdf'].filename))
         f = open(documents.path(filename), 'rb')
+        
+        author=Author(documents.path(filename))
+        advisor = Advisor(documents.path(filename))
+        jury=Jury(documents.path(filename))
+        project_p=Project(documents.path(filename))
         file_to_db = Documents(f.read())
         db.session.add(file_to_db)
         db.session.commit()
         author_info = AuthorInfo(
             user_id=current_identity.id,
-            name_surname="test author",
-            student_no=1234,
-            education_type='ikinic öğretim'
-
+            name_surname=' '.join(map(str, author.student_name)),
+            student_no=' '.join(map(str, author.id)),
+            education_type=' '.join(map(str, author.e_type))
+ 
         )
         db.session.add(author_info)
         db.session.commit()
 
         advisor_info = AdvisorInfo(
             user_id=current_identity.id,
-            advisor_name="advisor test",
-            advisor_surname="surname",
-            advisor_degree="iyi bir derece"
+            advisor_name=' '.join(map(str, advisor.advisor_name)),
+            advisor_surname=' '.join(map(str, advisor.advisor_name)),
+            advisor_degree=' '.join(map(str, advisor.advisor_degree))
         )
         db.session.add(advisor_info)
         db.session.commit()
 
         jury_info = JuryInfo(
             user_id=current_identity.id,
-            jury_name="juri test",
-            jury_surname="juri surname",
-            jury_degree="iyi bir derece"
+            jury_name=' '.join(map(str, jury.jury_name)),
+            jury_surname=' '.join(map(str, jury.jury_name)),
+            jury_degree=' '.join(map(str, jury.jury_degree))
         )
         db.session.add(jury_info)
         db.session.commit()
@@ -345,14 +350,15 @@ def upload_project():
             author_id=author_info.id,
             advisor_id=advisor_info.id,
             jury_id=jury_info.id,
-            lesson_type="lesson type test",
-            p_title="title test",
-            p_summary="summary summary",
-            p_keywords="asd,bsd,bsd",
-            p_delivery="p delivery"
+            lesson_type=' '.join(map(str, project_p.lesson_type)),
+            p_title=' '.join(map(str, project_p.project_name)),
+            p_summary=' '.join(map(str, project_p.summary)),
+            p_keywords=' '.join(map(str, project_p.keyword)),
+            p_delivery=' '.join(map(str, project_p.deliveryTime))
         )
         db.session.add(project_info)
         db.session.commit()
+        
         return str(project_info.id), 200
     else:
         abort(400)
