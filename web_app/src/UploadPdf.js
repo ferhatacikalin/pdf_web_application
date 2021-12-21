@@ -24,10 +24,9 @@ export default function UploadPdf() {
           setMsg("Proje Yüklendi");
       }
       else{
-        setMsg("Proje yüklenirken hata oluştu");
       }
     } catch (error) {
-      setMsg("Proje yüklenirken hata oluştu");
+     
       console.log(error);
     }
   };
