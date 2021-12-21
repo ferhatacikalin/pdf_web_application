@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-sqlalchemy
+mysqlclient
+Flask-JWT
+flask-rest-jsonapi
+jsonify
+Flask-Reuploaded
+Werkzeug

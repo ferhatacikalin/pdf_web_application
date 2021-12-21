@@ -15,13 +15,4 @@ services:
       - MYSQL_TCP_PORT=3306
     volumes:
       - ./db-data:/var/lib/mysql
-  web:
-    restart: always
-    depends_on:
-      - mysql
-    build: flask_app
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./flask_app:/flask_app
-  
+
