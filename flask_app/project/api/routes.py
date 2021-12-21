@@ -15,7 +15,7 @@ def me():
         return jsonify({
             'id': current_identity.id,
             'username': current_identity.username,
-            'is_admin' : current_identity.is_admin
+            'is_admin': current_identity.is_admin
         })
 
 
@@ -23,8 +23,6 @@ def me():
 @jwt_required()
 def add_user():
     if request.method == "POST":
-        db.create_all()
-
         user = Login(
             username=request.form.get('username'),
             password=request.form.get("password"),
@@ -32,19 +30,45 @@ def add_user():
         )
         db.session.add(user)
         db.session.commit()
-        return 'Başarılı'
+        return 'ok', 200
+
+
+@api.route('/user/list', methods=['GET'])
+@jwt_required()
+def list_user():
+    if request.method == "GET":
+        users = Login.query.all()
+        list = []
+        for user in users:
+            list.append({
+                'id': user.id,
+                'username': user.username,
+                'is_admin': user.is_admin
+
+            })
+
+        return jsonify(list)
+@api.route('/user/<u_id>', methods=['GET'])
+@jwt_required()
+def view_user(u_id):
+    if request.method == "GET":
+        user = Login.query.get(u_id)
+        return jsonify({
+                'id': user.id,
+                'username': user.username,
+                'is_admin': user.is_admin
+            })
 
 
 @api.route('/user/update/<u_id>', methods=['POST'])
 @jwt_required()
 def update_user(u_id):
     username = request.form.get('username')
-    password = request.form.get('password')
+
     is_admin = bool(request.form.get('is_admin') == 'true')
 
     user = Login.query.get(u_id)
     user.username = username
-    user.password = password
     user.is_admin = is_admin
     db.session.merge(user)
     db.session.commit()
@@ -192,7 +216,6 @@ def list_project():
 
         }
         list.append(item)
-
 
     return jsonify(list);
 

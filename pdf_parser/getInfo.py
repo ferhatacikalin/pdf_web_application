@@ -140,6 +140,7 @@ class Project():
 
 
 if __name__ == '__main__':
+
     a = Author()
     advisor = Advisor()
     j = Jury()

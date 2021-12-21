@@ -1,26 +1,28 @@
 import Login from "./Login";
-import Users from "./Users";
 import Footer from "./Footer";
 import Header from "./Header";
 import UploadPdf from "./UploadPdf";
 import { Routes, Route } from "react-router-dom";
 import UserManagmenet from "./UserManagement";
 import ViewProject from "./ViewProject";
-import ProjectLİst from './ProjectList'
-
+import ProjectList from './ProjectList';
+import UserList from './UserList';
+import EditUser from './EditUser';
+import Home from "./Home";
 export default function App() {
   return (
-    <div>
+    <div >
        <Header/>
-      <div className="container  max-w-screen-lg mx-auto">
-        <div class="py-8">
+      <div className="container  max-w-screen-lg mx-auto ">
+        <div class="py-8  ">
           <Routes>
-           <Route path="/" element={<UploadPdf />} />
+           <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/users" element={<Users />} />
             <Route path="/add_user" element={<UserManagmenet />} />
             <Route path="/upload_pdf" element={<UploadPdf />} />
-            <Route path="/project_list" element={<ProjectLİst/>} />
+            <Route path="/project_list" element={<ProjectList/>} />
+            <Route path="/user_list" element={<UserList/>} />
+            <Route path="/edit_user/:id" element={<EditUser/>} />
             <Route path="/view_project/:id" element={<ViewProject/>}/>
           </Routes>
         </div>

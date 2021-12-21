@@ -17,7 +17,7 @@ class Login(db.Model):
 
 class AuthorInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
     name_surname = db.Column(db.String(80), nullable=False)
     student_no = db.Column(db.Integer, nullable=False)
     education_type = db.Column(db.String(60), nullable=False)
@@ -33,7 +33,7 @@ class AuthorInfo(db.Model):
 class ProjectInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     document_id = db.Column(db.Integer, db.ForeignKey('documents.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('author_info.id'), nullable=False)
     advisor_id = db.Column(db.Integer, db.ForeignKey('advisor_info.id'), nullable=False)
     jury_id = db.Column(db.Integer, db.ForeignKey('jury_info.id'), nullable=False)
@@ -59,7 +59,7 @@ class ProjectInfo(db.Model):
 
 class AdvisorInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
     advisor_name = db.Column(db.String(80), nullable=False)
     advisor_surname = db.Column(db.String(80), nullable=False)
     advisor_degree = db.Column(db.String(80), nullable=False)
@@ -74,7 +74,7 @@ class AdvisorInfo(db.Model):
 
 class JuryInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
     jury_name = db.Column(db.String(90), nullable=False)
     jury_surname = db.Column(db.String(90), nullable=False)
     jury_degree = db.Column(db.String(90), nullable=False)
