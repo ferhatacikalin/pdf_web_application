@@ -18,14 +18,13 @@ class Login(db.Model):
 class AuthorInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), primary_key=True, nullable=False)
     name_surname = db.Column(db.String(80), nullable=False)
     student_no = db.Column(db.Integer, nullable=False)
     education_type = db.Column(db.String(60), nullable=False)
 
-    def __init__(self, user_id, project_id, name_surname, student_no, education_type):
+    def __init__(self, user_id, name_surname, student_no, education_type):
         self.user_id = user_id
-        self.project_id = project_id
+
         self.name_surname = name_surname
         self.student_no = student_no
         self.education_type = education_type
@@ -33,6 +32,7 @@ class AuthorInfo(db.Model):
 
 class ProjectInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    document_id = db.Column(db.Integer, db.ForeignKey('documents.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('author_info.id'), nullable=False)
     advisor_id = db.Column(db.Integer, db.ForeignKey('advisor_info.id'), nullable=False)
@@ -43,9 +43,10 @@ class ProjectInfo(db.Model):
     p_keywords = db.Column(db.Text, nullable=False)
     p_delivery = db.Column(db.String(120), nullable=False)
 
-    def __init__(self, user_id, author_id, advisor_id, jury_id,
+    def __init__(self, user_id, document_id, author_id, advisor_id, jury_id,
                  lesson_type, p_title, p_summary, p_keywords, p_delivery):
         self.user_id = user_id
+        self.document_id = document_id
         self.author_id = author_id
         self.advisor_id = advisor_id
         self.jury_id = jury_id
@@ -59,14 +60,13 @@ class ProjectInfo(db.Model):
 class AdvisorInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), nullable=False)
     advisor_name = db.Column(db.String(80), nullable=False)
     advisor_surname = db.Column(db.String(80), nullable=False)
     advisor_degree = db.Column(db.String(80), nullable=False)
 
-    def __init__(self, user_id, project_id, advisor_name, advisor_surname, advisor_degree):
+    def __init__(self, user_id, advisor_name, advisor_surname, advisor_degree):
         self.user_id = user_id
-        self.project_id = project_id
+
         self.advisor_name = advisor_name
         self.advisor_surname = advisor_surname
         self.advisor_degree = advisor_degree
@@ -75,14 +75,13 @@ class AdvisorInfo(db.Model):
 class JuryInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'), nullable=False)
     jury_name = db.Column(db.String(90), nullable=False)
     jury_surname = db.Column(db.String(90), nullable=False)
     jury_degree = db.Column(db.String(90), nullable=False)
 
-    def __init__(self, user_id, project_id, jury_name, jury_surname, jury_degree):
+    def __init__(self, user_id, jury_name, jury_surname, jury_degree):
         self.user_id = user_id
-        self.project_id = project_id
+
         self.jury_name = jury_name
         self.jury_surname = jury_surname
         self.jury_degree = jury_degree
@@ -90,9 +89,7 @@ class JuryInfo(db.Model):
 
 class Documents(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_info.id'),nullable=True)
-    document = db.Column(db.LargeBinary(length=(2**32)-1))
+    document = db.Column(db.LargeBinary(length=(2 ** 32) - 1))
 
-    def __init__(self,project_id,document):
-        self.project_id=project_id
+    def __init__(self, document):
         self.document = document
