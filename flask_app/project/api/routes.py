@@ -22,6 +22,8 @@ def me():
 @api.route('/user/add', methods=['POST'])
 @jwt_required()
 def add_user():
+    if not current_identity.is_admin:
+        return 'unauthorized', 400
     if request.method == "POST":
         user = Login(
             username=request.form.get('username'),
@@ -36,6 +38,8 @@ def add_user():
 @api.route('/user/list', methods=['GET'])
 @jwt_required()
 def list_user():
+    if not current_identity.is_admin:
+        return 'unauthorized', 400
     if request.method == "GET":
         users = Login.query.all()
         list = []
@@ -48,21 +52,27 @@ def list_user():
             })
 
         return jsonify(list)
+
+
 @api.route('/user/<u_id>', methods=['GET'])
 @jwt_required()
 def view_user(u_id):
+    if not current_identity.is_admin:
+        return 'unauthorized', 400
     if request.method == "GET":
         user = Login.query.get(u_id)
         return jsonify({
-                'id': user.id,
-                'username': user.username,
-                'is_admin': user.is_admin
-            })
+            'id': user.id,
+            'username': user.username,
+            'is_admin': user.is_admin
+        })
 
 
 @api.route('/user/update/<u_id>', methods=['POST'])
 @jwt_required()
 def update_user(u_id):
+    if not current_identity.is_admin:
+        return 'unauthorized', 400
     username = request.form.get('username')
 
     is_admin = bool(request.form.get('is_admin') == 'true')
@@ -78,11 +88,12 @@ def update_user(u_id):
 @api.route('/user/delete/<u_id>', methods=['GET'])
 @jwt_required()
 def delete_user(u_id):
+    if not current_identity.is_admin:
+        return 'unauthorized', 400
     user = Login.query.get(u_id)
     db.session.delete(user)
     db.session.commit()
     return 'ok', 200
-
 
 
 @api.route('/query/author/<a_id>', methods=['GET'])
@@ -117,7 +128,6 @@ def get_author_id(a_id):
             'p_summary': project.p_summary,
             'p_keywords': project.p_keywords,
             'p_delivery': project.p_delivery
-
 
         },
         'name_surname': author.name_surname,
@@ -283,7 +293,7 @@ def get_query_two(p_delivery, author_name, lesson_type):
     author = AuthorInfo.query.get_or_404(AuthorInfo.name_surname == author_name)
 
     project = ProjectInfo.query.get_or_404(author.id == ProjectInfo.author_id and
-                                           ProjectInfo.p_delivery == p_delivery and 
+                                           ProjectInfo.p_delivery == p_delivery and
                                            ProjectInfo.lesson_type == lesson_type)
     return jsonify({
         'id': project.id,
@@ -295,10 +305,7 @@ def get_query_two(p_delivery, author_name, lesson_type):
         'p_keywords': project.p_keywords,
         'p_delivery': project.p_delivery
 
-
-
     });
-
 
 
 @api.route('/upload_project', methods=['POST'])
@@ -398,7 +405,10 @@ def view_project(p_id):
 @api.route('/project/list', methods=['GET'])
 @jwt_required()
 def list_project():
-    projects = ProjectInfo.query.all()
+    if current_identity.is_admin:
+        projects = ProjectInfo.query.all()
+    else:
+        projects = ProjectInfo.query.filter_by(user_id=current_identity.id)
     list = []
     for project in projects:
         author = AuthorInfo.query.get_or_404(project.author_id)

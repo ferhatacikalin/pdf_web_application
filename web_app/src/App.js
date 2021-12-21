@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import UploadPdf from "./UploadPdf";
 import { Routes, Route } from "react-router-dom";
-import UserManagmenet from "./UserManagement";
+import NewUser from "./NewUser";
 import ViewProject from "./ViewProject";
 import ProjectList from './ProjectList';
 import UserList from './UserList';
@@ -18,7 +18,7 @@ export default function App() {
           <Routes>
            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/add_user" element={<UserManagmenet />} />
+            <Route path="/add_user" element={<NewUser />} />
             <Route path="/upload_pdf" element={<UploadPdf />} />
             <Route path="/project_list" element={<ProjectList/>} />
             <Route path="/user_list" element={<UserList/>} />

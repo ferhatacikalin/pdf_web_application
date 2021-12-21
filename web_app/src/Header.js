@@ -55,6 +55,9 @@ export default class Header extends React.Component{
                 <a class=" font-extrabold" href="/#">
                   {this.state.username}
                 </a>
+                <a class=" font-extralight text-sm" href="/#">
+                  {this.state.is_admin===true? 'yönetici' : ''}
+                </a>
                 {/* <img class="h-8 w-8" src="/icons/rocket.svg" alt="Workflow"/> */}
               </a>
               <div class="hidden md:block">
@@ -65,11 +68,11 @@ export default class Header extends React.Component{
                   >
                     Yükle
                   </a>
-                  <a
+                  <a hidden={this.state.is_admin===false}
                     class="text-black-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     href="/#"
                   >
-                    Ara
+                    Sorgular
                   </a>
                   <a
                     class="text-black-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -80,14 +83,14 @@ export default class Header extends React.Component{
                   <a
                   hidden={this.state.is_admin===false}
                     class="text-black-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    href="/project_list"
+                    href="/user_list"
                   >
                     Kullanıcılar
                   </a>
                   <button
                   onClick={()=>{localStorage.removeItem('access_token');window.location='/login'}}
                     class="text-red-800  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    href="/project_list"
+                   
                   >
                    Çıkış Yap
                   </button>
