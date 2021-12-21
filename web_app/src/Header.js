@@ -15,28 +15,23 @@ export default function Header() {
                 <div class="ml-10 flex items-baseline space-x-4">
                   <a
                     class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    href="/#"
+                    href="/upload_pdf"
                   >
-                    Home
-                  </a>
-                  <a
-                    class="text-gray-800 dark:text-white  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    href="/#"
-                  >
-                    Gallery
+                    Yükle
                   </a>
                   <a
                     class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     href="/#"
                   >
-                    Content
+                    Ara
                   </a>
                   <a
                     class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    href="/#"
+                    href="/project_list"
                   >
-                    Contact
+                    Tezler
                   </a>
+              
                 </div>
               </div>
             </div>

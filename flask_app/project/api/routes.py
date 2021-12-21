@@ -14,7 +14,8 @@ def me():
     if request.method == "GET":
         return jsonify({
             'id': current_identity.id,
-            'username': current_identity.username
+            'username': current_identity.username,
+            'is_admin' : current_identity.is_admin
         })
 
 
@@ -151,6 +152,49 @@ def view_project(p_id):
         'p_delivery': project.p_delivery
 
     });
+
+
+@api.route('/project/list', methods=['GET'])
+@jwt_required()
+def list_project():
+    projects = ProjectInfo.query.all()
+    list = []
+    for project in projects:
+        author = AuthorInfo.query.get_or_404(project.author_id)
+        advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+        jury = JuryInfo.query.get_or_404(project.jury_id)
+        item = {
+            'project_id': project.id,
+            'user_id': project.user_id,
+            'document_id': project.document_id,
+            'author': {
+                'id': author.id,
+                'name_surname': author.name_surname,
+                'student_no': author.student_no,
+                'education_type': author.education_type
+            },
+            'advisor': {
+                'advisor_name': advisor.advisor_name,
+                'advisor_surname': advisor.advisor_surname,
+                'advisor_degree': advisor.advisor_degree,
+            },
+            'jury': {
+                'jury_name': jury.jury_name,
+                'jury_surname': jury.jury_surname,
+                'jury_degree': jury.jury_degree
+
+            },
+            'lesson_type': project.lesson_type,
+            'p_title': project.p_title,
+            'p_summary': project.p_summary,
+            'p_keywords': project.p_keywords,
+            'p_delivery': project.p_delivery
+
+        }
+        list.append(item)
+
+
+    return jsonify(list);
 
 
 @api.route('/download_document/<id>')
