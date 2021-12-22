@@ -137,15 +137,17 @@ def get_author_id(a_id):
     });
 
 
-@api.route('/query/lesson/<l_name>', methods=['GET'])
+@api.route('/query/lesson', methods=['POST'])
 @jwt_required()
-def get_lesson_name(l_name):
-    project = ProjectInfo.query.get_or_404(ProjectInfo.lesson_type == l_name)
-    author = AuthorInfo.query.get_or_404(project.author_id)
-    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
-    jury = JuryInfo.query.get_or_404(project.jury_id)
-
-    return jsonify({
+def get_lesson_name():
+    list=[]
+    projects = ProjectInfo.query.filter(ProjectInfo.lesson_type == request.form['query']).all()
+    for project in projects:
+            
+        author = AuthorInfo.query.get_or_404(project.author_id)
+        advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+        jury = JuryInfo.query.get_or_404(project.jury_id)
+        list.append({
         'project_id': project.id,
         'user_id': project.user_id,
         'document_id': project.document_id,
@@ -172,92 +174,22 @@ def get_lesson_name(l_name):
         'p_keywords': project.p_keywords,
         'p_delivery': project.p_delivery
 
-    });
+        })
+
+    return jsonify(list);
 
 
-@api.route('/query/project_name/<p_title>', methods=['GET'])
+@api.route('/query/project_name', methods=['POST'])
 @jwt_required()
-def get_project_name(p_title):
-    project = ProjectInfo.query.get_or_404(ProjectInfo.p_title == p_title)
-    author = AuthorInfo.query.get_or_404(project.author_id)
-    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
-    jury = JuryInfo.query.get_or_404(project.jury_id)
-
-    return jsonify({
-        'project_id': project.id,
-        'user_id': project.user_id,
-        'document_id': project.document_id,
-        'author': {
-            'id': author.id,
-            'name_surname': author.name_surname,
-            'student_no': author.student_no,
-            'education_type': author.education_type,
-        },
-        'advisor': {
-            'advisor_name': advisor.advisor_name,
-            'advisor_surname': advisor.advisor_surname,
-            'advisor_degree': advisor.advisor_degree,
-        },
-        'jury': {
-            'jury_name': jury.jury_name,
-            'jury_surname': jury.jury_surname,
-            'jury_degree': jury.jury_degree,
-
-        },
-        'lesson_type': project.lesson_type,
-        'p_title': project.p_title,
-        'p_summary': project.p_summary,
-        'p_keywords': project.p_keywords,
-        'p_delivery': project.p_delivery
-    });
-
-
-@api.route('/query/delivery/<p_delivery>', methods=['GET'])
-@jwt_required()
-def get_project_delivery(p_delivery):
-    project = ProjectInfo.query.get_or_404(ProjectInfo.p_delivery == p_delivery)
-    author = AuthorInfo.query.get_or_404(project.author_id)
-    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
-    jury = JuryInfo.query.get_or_404(project.jury_id)
-
-    return jsonify({
-        'project_id': project.id,
-        'user_id': project.user_id,
-        'document_id': project.document_id,
-        'author': {
-            'id': author.id,
-            'name_surname': author.name_surname,
-            'student_no': author.student_no,
-            'education_type': author.education_type
-        },
-        'advisor': {
-            'advisor_name': advisor.advisor_name,
-            'advisor_surname': advisor.advisor_surname,
-            'advisor_degree': advisor.advisor_degree,
-        },
-        'jury': {
-            'jury_name': jury.jury_name,
-            'jury_surname': jury.jury_surname,
-            'jury_degree': jury.jury_degree
-
-        },
-        'lesson_type': project.lesson_type,
-        'p_title': project.p_title,
-        'p_summary': project.p_summary,
-        'p_keywords': project.p_keywords,
-        'p_delivery': project.p_delivery
-    });
-
-
-@api.route('/query/keywords/<p_keywords>', methods=['GET'])
-@jwt_required()
-def get_project_keywords(p_keywords):
-    project = ProjectInfo.query.get_or_404(p_keywords in ProjectInfo.p_keywords)
-    author = AuthorInfo.query.get_or_404(project.author_id)
-    advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
-    jury = JuryInfo.query.get_or_404(project.jury_id)
-
-    return jsonify({
+def get_project_name():
+    list=[]
+    projects = ProjectInfo.query.filter(ProjectInfo.p_title == request.form['query']).all()
+    for project in projects:
+            
+        author = AuthorInfo.query.get_or_404(project.author_id)
+        advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+        jury = JuryInfo.query.get_or_404(project.jury_id)
+        list.append({
         'project_id': project.id,
         'user_id': project.user_id,
         'document_id': project.document_id,
@@ -284,28 +216,143 @@ def get_project_keywords(p_keywords):
         'p_keywords': project.p_keywords,
         'p_delivery': project.p_delivery
 
-    });
+        })
 
+    return jsonify(list);
 
-@api.route('/query/<p_delivery>+<author_name>+<lesson_type>', methods=['GET'])
+@api.route('/query/delivery', methods=['POST'])
 @jwt_required()
-def get_query_two(p_delivery, author_name, lesson_type):
-    author = AuthorInfo.query.get_or_404(AuthorInfo.name_surname == author_name)
-
-    project = ProjectInfo.query.get_or_404(author.id == ProjectInfo.author_id and
-                                           ProjectInfo.p_delivery == p_delivery and
-                                           ProjectInfo.lesson_type == lesson_type)
-    return jsonify({
-        'id': project.id,
+def get_project_delivery():
+    list=[]
+    projects = ProjectInfo.query.filter(ProjectInfo.p_delivery == request.form['query']).all()
+    for project in projects:
+            
+        author = AuthorInfo.query.get_or_404(project.author_id)
+        advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+        jury = JuryInfo.query.get_or_404(project.jury_id)
+        list.append({
+        'project_id': project.id,
         'user_id': project.user_id,
         'document_id': project.document_id,
+        'author': {
+            'id': author.id,
+            'name_surname': author.name_surname,
+            'student_no': author.student_no,
+            'education_type': author.education_type
+        },
+        'advisor': {
+            'advisor_name': advisor.advisor_name,
+            'advisor_surname': advisor.advisor_surname,
+            'advisor_degree': advisor.advisor_degree,
+        },
+        'jury': {
+            'jury_name': jury.jury_name,
+            'jury_surname': jury.jury_surname,
+            'jury_degree': jury.jury_degree
+
+        },
         'lesson_type': project.lesson_type,
         'p_title': project.p_title,
         'p_summary': project.p_summary,
         'p_keywords': project.p_keywords,
         'p_delivery': project.p_delivery
 
-    });
+        })
+        return jsonify(list);
+
+@api.route('/query/keywords', methods=['POST'])
+@jwt_required()
+def get_project_keywords():
+    list=[]
+    try:
+        projects = ProjectInfo.query.filter(ProjectInfo.p_keywords.like( "%{}%".format(request.form['query']))).all()
+        for project in projects:
+                
+            author = AuthorInfo.query.get_or_404(project.author_id)
+            advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+            jury = JuryInfo.query.get_or_404(project.jury_id)
+            list.append({
+            'project_id': project.id,
+            'user_id': project.user_id,
+            'document_id': project.document_id,
+            'author': {
+                'id': author.id,
+                'name_surname': author.name_surname,
+                'student_no': author.student_no,
+                'education_type': author.education_type
+            },
+            'advisor': {
+                'advisor_name': advisor.advisor_name,
+                'advisor_surname': advisor.advisor_surname,
+                'advisor_degree': advisor.advisor_degree,
+            },
+            'jury': {
+                'jury_name': jury.jury_name,
+                'jury_surname': jury.jury_surname,
+                'jury_degree': jury.jury_degree
+
+            },
+            'lesson_type': project.lesson_type,
+            'p_title': project.p_title,
+            'p_summary': project.p_summary,
+            'p_keywords': project.p_keywords,
+            'p_delivery': project.p_delivery
+
+            })
+            if len(list)==0:
+                return jsonify({}),404;
+
+            else:
+                return jsonify(list)
+    except:
+        return 'HATA OLUŞTU',500
+@api.route('/query_two', methods=['POST'])
+@jwt_required()
+def get_query_two():
+    
+    list=[]
+    try:
+            projects = ProjectInfo.query.filter(ProjectInfo.p_delivery.like("%{}%".format(request.form['delivery']))).filter(ProjectInfo.user_id== request.form['user_id']).all()
+            for project in projects:
+                    
+                author = AuthorInfo.query.get_or_404(project.author_id)
+                advisor = AdvisorInfo.query.get_or_404(project.advisor_id)
+                jury = JuryInfo.query.get_or_404(project.jury_id)
+                list.append({
+                'project_id': project.id,
+                'user_id': project.user_id,
+                'document_id': project.document_id,
+                'author': {
+                    'id': author.id,
+                    'name_surname': author.name_surname,
+                    'student_no': author.student_no,
+                    'education_type': author.education_type
+                },
+                'advisor': {
+                    'advisor_name': advisor.advisor_name,
+                    'advisor_surname': advisor.advisor_surname,
+                    'advisor_degree': advisor.advisor_degree,
+                },
+                'jury': {
+                    'jury_name': jury.jury_name,
+                    'jury_surname': jury.jury_surname,
+                    'jury_degree': jury.jury_degree
+
+                },
+                'lesson_type': project.lesson_type,
+                'p_title': project.p_title,
+                'p_summary': project.p_summary,
+                'p_keywords': project.p_keywords,
+                'p_delivery': project.p_delivery
+
+                })
+                if len(list)==0:
+                    return jsonify({}),404;
+
+                else:
+                    return jsonify(list)
+    except:
+            return 'HATA OLUŞTU',500
 
 
 @api.route('/upload_project', methods=['POST'])
@@ -325,9 +372,9 @@ def upload_project():
         db.session.commit()
         author_info = AuthorInfo(
             user_id=current_identity.id,
-            name_surname=' '.join(map(str, author.student_name)),
-            student_no=' '.join(map(str, author.id)),
-            education_type=' '.join(map(str, author.e_type))
+            name_surname='  -  '.join(map(str, author.student_name)),
+            student_no='  -  '.join(map(str, author.id)),
+            education_type='  -  '.join(map(str, author.e_type))
  
         )
         db.session.add(author_info)
@@ -335,18 +382,18 @@ def upload_project():
 
         advisor_info = AdvisorInfo(
             user_id=current_identity.id,
-            advisor_name=' '.join(map(str, advisor.advisor_name)),
-            advisor_surname=' '.join(map(str, advisor.advisor_name)),
-            advisor_degree=' '.join(map(str, advisor.advisor_degree))
+            advisor_name='  -  '.join(map(str, advisor.advisor_name)),
+            advisor_surname=''.join(map(str, advisor.advisor_name)),
+            advisor_degree='  -  '.join(map(str, advisor.advisor_degree))
         )
         db.session.add(advisor_info)
         db.session.commit()
 
         jury_info = JuryInfo(
             user_id=current_identity.id,
-            jury_name=' '.join(map(str, jury.jury_name)),
-            jury_surname=' '.join(map(str, jury.jury_name)),
-            jury_degree=' '.join(map(str, jury.jury_degree))
+            jury_name='  -  '.join(map(str, jury.jury_name)),
+            jury_surname='',
+            jury_degree='  -  '.join(map(str, jury.jury_degree))
         )
         db.session.add(jury_info)
         db.session.commit()

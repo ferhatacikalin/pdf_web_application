@@ -19,12 +19,11 @@ class AuthorInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = db.Column(db.Integer,  nullable=False)
     name_surname = db.Column(db.String(80), nullable=False)
-    student_no = db.Column(db.Integer, nullable=False)
+    student_no = db.Column(db.String(80), nullable=False)
     education_type = db.Column(db.String(60), nullable=False)
 
     def __init__(self, user_id, name_surname, student_no, education_type):
         self.user_id = user_id
-
         self.name_surname = name_surname
         self.student_no = student_no
         self.education_type = education_type
